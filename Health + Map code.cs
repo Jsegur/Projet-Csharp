@@ -74,15 +74,18 @@ public class Program {
         Console.WriteLine();
         health.KoOrNot();
         Console.WriteLine("Kill enemies and strong enemies to get the keys that will unlock the doors to get to the boss and defeat him.");
+        string legend = "S : Start\nX : Point of interest\nD : Door\nE : Exit\nA : Enemy\nB : Strong enemy\nC : Boss";
         string[] tempmap = File.ReadAllLines("../../../Map.txt"); 
 
         char[,] map = ExtractMap(tempmap);
-        Console.WriteLine();
-        Console.WriteLine($"Map length : {map.GetLength(0)}\nMap width : {map.GetLength(1)}");
+        int mapLength = map.GetLength(0);
+        int mapWidth = map.GetLength(1);
+
+        Console.WriteLine($"\nMap length : {mapLength}\nMap width : {mapWidth}");
+        Console.WriteLine($"\nMap legend :\n{legend}");
     }
 
-    public static char[,] ExtractMap(string[] input)
-    {
+    public static char[,] ExtractMap(string[] input) {
         string[] tempmap = input;
         char[,] result = new char[tempmap.Length, tempmap.Max(i => i.Length)];
         for (int i = 0; i < tempmap.Length; i++)
