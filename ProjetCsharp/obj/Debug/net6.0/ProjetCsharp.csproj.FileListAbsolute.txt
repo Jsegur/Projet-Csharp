@@ -13,3 +13,11 @@ C:\Users\jsegur\source\repos\ConsoleApp1\obj\Debug\net6.0\refint\ProjetCsharp.dl
 C:\Users\jsegur\source\repos\ConsoleApp1\obj\Debug\net6.0\ProjetCsharp.pdb
 C:\Users\jsegur\source\repos\ConsoleApp1\obj\Debug\net6.0\ProjetCsharp.genruntimeconfig.cache
 C:\Users\jsegur\source\repos\ConsoleApp1\obj\Debug\net6.0\ref\ProjetCsharp.dll
+C:\Users\jsegur\source\repos\ProjetCsharp\obj\Debug\net6.0\ProjetCsharp.csproj.AssemblyReference.cache
+C:\Users\jsegur\source\repos\ProjetCsharp\obj\Debug\net6.0\ProjetCsharp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jsegur\source\repos\ProjetCsharp\obj\Debug\net6.0\ProjetCsharp.AssemblyInfoInputs.cache
+C:\Users\jsegur\source\repos\ProjetCsharp\obj\Debug\net6.0\ProjetCsharp.AssemblyInfo.cs
+C:\Users\jsegur\source\repos\ProjetCsharp\obj\Debug\net6.0\ProjetCsharp.csproj.CoreCompileInputs.cache
+C:\Users\jsegur\source\repos\ProjetCsharp\obj\Debug\net6.0\ProjetCsharp.dll
+C:\Users\jsegur\source\repos\ProjetCsharp\obj\Debug\net6.0\refint\ProjetCsharp.dll
+C:\Users\jsegur\source\repos\ProjetCsharp\obj\Debug\net6.0\ProjetCsharp.pdb
