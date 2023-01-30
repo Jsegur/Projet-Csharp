@@ -1,4 +1,6 @@
-﻿public class Health {
+﻿using System;
+
+public class Health {
     int _health;
     int _maxHealth;
     bool isKo;
@@ -31,7 +33,7 @@
     }
 
     public void Regen (int amount) {
-        if (amount>0) { 
+        if (amount > 0) { 
             _health = Math.Min(_maxHealth, _health + amount); 
         }
         Console.WriteLine($"{amount} HP regenerated");
@@ -53,8 +55,8 @@
 }
 
 public class Program { 
-    static void Main(string[] args)
-    {
+    static void Main(string[] args) {
+        Console.SetWindowSize(145, 39);
         Health health = new Health(1000);
         Console.WriteLine($"Health : {health.Health_}");
         health.Health_ = 100;
@@ -74,15 +76,26 @@ public class Program {
         Console.WriteLine();
         health.KoOrNot();
         Console.WriteLine("Kill enemies and strong enemies to get the keys that will unlock the doors to get to the boss and defeat him.");
-        string legend = "S : Start\nX : Point of interest\nD : Door\nE : Exit\nA : Enemy\nB : Strong enemy\nC : Boss";
+        string[] legend = { "S : Start","X : Point of interest","D : Door","E : Exit","A : Enemy","B : Strong enemy","C : Boss" };
         string[] tempmap = File.ReadAllLines("../../../Map.txt"); 
 
         char[,] map = ExtractMap(tempmap);
-        int mapLength = map.GetLength(0);
-        int mapWidth = map.GetLength(1);
+        int mapLength = map.GetLength(1);
+        int mapWidth = map.GetLength(0);
 
-        Console.WriteLine($"\nMap length : {mapLength}\nMap width : {mapWidth}");
-        Console.WriteLine($"\nMap legend :\n{legend}");
+        Console.WriteLine($"\nMap width : {mapWidth}\nMap length : {mapLength}");
+        Console.WriteLine($"\nMap legend :");
+        foreach(string i in legend) Console.WriteLine(i);
+
+        Console.WriteLine();
+        for (int i = 0; i < mapWidth; i++)
+        {
+            for (int j = 0; j < mapLength; j++)
+            {
+                Console.Write("{0}", map[i, j]);
+            }
+            Console.WriteLine();
+        }
     }
 
     public static char[,] ExtractMap(string[] input) {
