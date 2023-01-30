@@ -19,10 +19,8 @@ class Map {
     public static char[,] ExtractMap(string[] input) {
         string[] tempmap = input;
         char[,] result = new char[tempmap.Length, tempmap.Max(i => i.Length)];
-        for (int i = 0; i < tempmap.Length; i++)
-        {
-            for (int j = 0; j < tempmap[i].Length; j++)
-            {
+        for (int i = 0; i < tempmap.Length; i++) {
+            for (int j = 0; j < tempmap[i].Length; j++) {
                 if (tempmap[i].Length <= j) break;
 
                 result[i, j] = tempmap[i][j];
@@ -32,10 +30,8 @@ class Map {
     }
 
     public void PrintMap() {
-        for (int i = 0; i < _mapWidth; i++)
-        {
-            for (int j = 0; j < _mapLength; j++)
-            {
+        for (int i = 0; i < _mapWidth; i++) {
+            for (int j = 0; j < _mapLength; j++) {
                 Console.Write("{0}", _map[i, j]);
             }
             Console.WriteLine();
