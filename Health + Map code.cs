@@ -1,80 +1,6 @@
-﻿using System;
-
-public class Health {
-    int _health;
-    int _maxHealth;
-    bool isKo;
-
-    public int Health_ { get => _health;  set => _health = value; }
-    public int MaxHealth_ { get => _maxHealth; set => _maxHealth = value; }
-    public bool IsKo { get => isKo; }
-
-    public Health(int maxHealth)
-    {
-        _maxHealth = maxHealth;
-        _health = _maxHealth;
-    }
-    public Health(int maxHealth, int currentHealth)
-    {
-        _maxHealth = maxHealth;
-        _health = currentHealth;
-    }
-
-    public void Damage(int amount) {
-        if (amount > 0) {
-            _health = Math.Max(0, _health - amount);
-        }
-        Console.WriteLine($"{amount} HP lost");
-        if (_health ==0) {
-            isKo= true;
-        } else {
-            isKo= false;
-        }
-    }
-
-    public void Regen (int amount) {
-        if (amount > 0) { 
-            _health = Math.Min(_maxHealth, _health + amount); 
-        }
-        Console.WriteLine($"{amount} HP regenerated");
-        if (_health == 0) {
-            isKo = true;
-        } else {
-            isKo = false;
-        }
-    }
-
-    public void KoOrNot() {
-        if (IsKo) {
-            Console.WriteLine("KO !");
-        } else {
-            Console.WriteLine("Not KO");
-        }
-    }
-
-}
-
-public class Program { 
+﻿public class Program { 
     static void Main(string[] args) {
         Console.SetWindowSize(145, 39);
-        Health health = new Health(1000);
-        Console.WriteLine($"Health : {health.Health_}");
-        health.Health_ = 100;
-        Console.WriteLine($"Health : {health.Health_}");
-        health.Regen(400);
-        Console.WriteLine($"Health : {health.Health_}");
-        health.Regen(300);
-        Console.WriteLine($"Health : {health.Health_}");
-        health.Regen(600);
-        Console.WriteLine($"Health : {health.Health_}");
-        health.Damage(600);
-        Console.WriteLine($"Health : {health.Health_}");
-        health.Damage(300);
-        Console.WriteLine($"Health : {health.Health_}");
-        health.Damage(400);
-        Console.WriteLine($"Health : {health.Health_}");
-        health.KoOrNot();
-        Console.WriteLine();
         Console.WriteLine("Kill enemies and strong enemies to get the keys that will unlock the doors to get to the boss and defeat him.");
         string[] legend = { "P : Player","S : Start","X : Point of interest","D : Door","E : Exit","A : Enemy","B : Strong enemy","C : Boss" };
         string[] tempmap = File.ReadAllLines("../../../Map.txt"); 
@@ -88,6 +14,7 @@ public class Program {
         Console.WriteLine($"Map width : {mapWidth}\nMap length : {mapLength}");
         Console.WriteLine($"\nMap legend :");
         foreach(string i in legend) Console.WriteLine(i);
+        Console.WriteLine();
         Console.WriteLine();
 
         map[playerX, playerY] = 'P';
