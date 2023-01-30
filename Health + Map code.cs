@@ -73,21 +73,24 @@ public class Program {
         Console.WriteLine($"Health : {health.Health_}");
         health.Damage(400);
         Console.WriteLine($"Health : {health.Health_}");
-        Console.WriteLine();
         health.KoOrNot();
+        Console.WriteLine();
         Console.WriteLine("Kill enemies and strong enemies to get the keys that will unlock the doors to get to the boss and defeat him.");
-        string[] legend = { "S : Start","X : Point of interest","D : Door","E : Exit","A : Enemy","B : Strong enemy","C : Boss" };
+        string[] legend = { "P : Player","S : Start","X : Point of interest","D : Door","E : Exit","A : Enemy","B : Strong enemy","C : Boss" };
         string[] tempmap = File.ReadAllLines("../../../Map.txt"); 
 
         char[,] map = ExtractMap(tempmap);
         int mapLength = map.GetLength(1);
         int mapWidth = map.GetLength(0);
+        int playerX = 2;
+        int playerY = 9;
 
-        Console.WriteLine($"\nMap width : {mapWidth}\nMap length : {mapLength}");
+        Console.WriteLine($"Map width : {mapWidth}\nMap length : {mapLength}");
         Console.WriteLine($"\nMap legend :");
         foreach(string i in legend) Console.WriteLine(i);
-
         Console.WriteLine();
+
+        map[playerX, playerY] = 'P';
         for (int i = 0; i < mapWidth; i++)
         {
             for (int j = 0; j < mapLength; j++)
@@ -96,6 +99,7 @@ public class Program {
             }
             Console.WriteLine();
         }
+        
     }
 
     public static char[,] ExtractMap(string[] input) {
