@@ -80,6 +80,39 @@ class Map {
             PrintMap();
         }
     }
+
+    public void Encounter() {
+        if (_events.Contains(_underPlayer)) {
+            switch (_underPlayer) {
+                case 'X':
+                    if (_playerX == 8 && _playerY == 9) {
+                        Console.WriteLine("You found the first item !");
+                    } 
+                    if (_playerX == 21 && _playerY == 25) {
+                        Console.WriteLine("You found the second item !");
+                    }
+                    
+                    break;
+                case 'D':
+                    Console.WriteLine("You encountered a door !");
+                    break;
+                case 'E':
+                    Console.WriteLine("Congratulations, you found the exit !");
+                    break;
+                case 'A':
+                    Console.WriteLine("You encountered an enemy.");
+                    break;
+                case 'B':
+                    Console.WriteLine("You encountered an stronger enemy.");
+                    break;
+                case 'C':
+                    Console.WriteLine("You encountered the boss.");
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 }
 
 public class Maps { 
@@ -97,15 +130,19 @@ public class Maps {
             }
             if (key.Key == ConsoleKey.DownArrow) {
                 map.GoDown();
+                map.Encounter();
             }
             if (key.Key == ConsoleKey.UpArrow) {
                 map.GoUp();
+                map.Encounter();
             }
             if (key.Key == ConsoleKey.RightArrow) {
                 map.GoRight();
+                map.Encounter();
             }
             if (key.Key == ConsoleKey.LeftArrow) {
                 map.GoLeft();
+                map.Encounter();
             }
         }
     }
