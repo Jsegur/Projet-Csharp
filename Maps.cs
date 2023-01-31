@@ -9,12 +9,8 @@ class Map {
     static char _underPlayer = _map[_playerX, _playerY];
     static char[] _walls = { '─', '│', '┌', '┐', '└', '┘', '┤', '┬', '┴' };
 
-    public void ShowInstructions() {
-        Console.WriteLine("Kill enemies and strong enemies to get the keys that will unlock the doors to get to the boss and defeat him.");
-        Console.WriteLine($"Map width : {_mapWidth}\nMap length : {_mapLength}");
-        Console.WriteLine("Legend : ");
-        foreach (string i in _legend) Console.WriteLine(i);
-    }
+    public int MapWidth { get { return _mapWidth; } }
+    public int MapLength { get { return _mapLength;} }
 
     public static char[,] ExtractMap(string[] input) {
         string[] tempmap = input;
@@ -30,13 +26,18 @@ class Map {
     }
 
     public void PrintMap() {
+        Console.Clear();
+        Console.WriteLine("Kill enemies and strong enemies to get the keys that will unlock the doors to get to the boss and defeat him.");
+        Console.WriteLine($"\nMap width : {_mapWidth}\nMap length : {_mapLength}");
+        Console.WriteLine("\nLegend : ");
+        foreach (string i in _legend) Console.WriteLine(i);
+        _map[_playerX, _playerY] = 'P';
         for (int i = 0; i < _mapWidth; i++) {
             for (int j = 0; j < _mapLength; j++) {
                 Console.Write("{0}", _map[i, j]);
             }
             Console.WriteLine();
         }
-        _map[_playerX, _playerY] = 'P';
     }
 
     public void GoLeft(){
@@ -82,10 +83,9 @@ class Map {
 
 public class Maps { 
     static void Main(string[] args) {
-        Console.SetWindowSize(145, 40);
-
         Map map = new Map();
-        map.ShowInstructions();
+        Console.SetWindowSize(map.MapLength, map.MapWidth + 15);
+               
         
         map.PrintMap();
         bool game = true;
