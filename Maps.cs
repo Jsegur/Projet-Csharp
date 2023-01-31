@@ -8,6 +8,7 @@ class Map {
     static int _playerY = 9;
     static char _underPlayer = _map[_playerX, _playerY];
     static char[] _walls = { '─', '│', '┌', '┐', '└', '┘', '┤', '┬', '┴' };
+    static char[] _events = { 'X', 'D', 'E', 'A', 'B', 'C' }; // X1 : 8 ; 9 / X2 : 21 ; 25
 
     public int MapWidth { get { return _mapWidth; } }
     public int MapLength { get { return _mapLength;} }
@@ -74,7 +75,7 @@ class Map {
         if (!_walls.Contains(_map[_playerX + 1, _playerY])){
             _map[_playerX, _playerY] = _underPlayer;
             _playerX++;
-            _map[_playerX, _playerY] = _underPlayer;
+            _underPlayer = _map[_playerX, _playerY];
             _map[_playerX, _playerY] = 'P';
             PrintMap();
         }
@@ -85,7 +86,6 @@ public class Maps {
     static void Main(string[] args) {
         Map map = new Map();
         Console.SetWindowSize(map.MapLength, map.MapWidth + 15);
-               
         
         map.PrintMap();
         bool game = true;
