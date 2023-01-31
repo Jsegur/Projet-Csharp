@@ -6,35 +6,59 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjetCsharp.Combat
+namespace ProjetCsharp
 {
     internal class Level
     {
-        int _level;
-        bool levelUp = false;
-        int _exp = 0;
-        int _addExp = 100;
-        int _expMax = 100;
-        int _point;
+        public int level;
+        private float exp;
+        private float expMax;
 
-        public int Level_ { get => _level; set => _level = value; }
-        public int GetLevel()
+        void Start()
         {
-            return _level;
+            level = 1;
+            _health = 100;
+            _mana = 100;
+            _strenght = 10;
+            exp = 0;
+            expMax = 100;
         }
-        public void SetLevel(int value)
+        
+        void Up() 
         {
-            _level = value;
-        }
-
-        private void LevelUp()
-        {
-            while (kill = true)
+            Exp();
+            if(Monster._health <= 0) 
             {
-                if (_exp = _expMax)
-
+                exp += 100;
             }
+        }
+        void LevelUp()
+        {
+            level += 1;
+            exp = 0;
 
+            switch (level) 
+            {
+                case 2:
+                    _health = 200;
+                    _mana = 200;
+                    _strenght += 20;
+                    expMax = 200;
+                    break;
+                case 3:
+                    _health = 300;
+                    _mana = 300;
+                    _strenght += 30;
+                    expMax = 300;
+                    break;
+            }
+        }
+        void Exp()
+        { 
+            if(exp >= expMax) 
+            {
+                LevelUp();
+            }
         }
     }
 }

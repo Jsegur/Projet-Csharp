@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjetCsharp.Combat
+namespace ProjetCsharp
 {
     class Mana
     {
@@ -21,6 +21,18 @@ namespace ProjetCsharp.Combat
             _mana = value;
         }
 
+        /*
+        public void Consum(int amount)
+        {
+            if (_mana == 0)
+            {
+
+            }
+
+            _mana -= amount;
+            _mana = Math.Max(0, _mana - amount);
+        }
+        */
         public void Regen(int amount)
         {
             _mana = Math.Min(_maxMana, _mana + amount);
