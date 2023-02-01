@@ -26,7 +26,6 @@ class Map {
         for (int i = 0; i < tempmap.Length; i++) {
             for (int j = 0; j < tempmap[i].Length; j++) {
                 if (tempmap[i].Length <= j) break;
-
                 result[i, j] = tempmap[i][j];
             }
         }
@@ -36,7 +35,6 @@ class Map {
     public void PrintMap() {
         Console.Clear();
         Console.WriteLine("Kill enemies and stronger enemies to get the keys that will unlock the doors to get to the boss and defeat him.\nMove with the arrow keys and quit game with escape key.");
-        Console.WriteLine($"\nMap width : {_mapWidth}\nMap length : {_mapLength}");
         Console.WriteLine("\nLegend :");
         foreach (string i in _legend) Console.WriteLine(i);
         string inv = "\nInventory :";
@@ -127,7 +125,6 @@ class Map {
                         _items[2] = "Potion";
                         _tileUnderPlayer = ' ';
                     }
-
                     break;
                 case 'D':
                     Console.WriteLine("You encountered a door !");
@@ -135,10 +132,13 @@ class Map {
                         _tileUnderPlayer = ' ';
                         _keyNumber--;
                     } else {
-                        _map[_playerX, _playerY] = ' ';
+                        _map[_playerX, _playerY] = 'D';
+                        _map[_oldX, _oldY] = ' ';
                         _playerX = _oldX;
                         _playerY = _oldY;
                         _map[_playerX, _playerY] = 'P';
+                        _tileUnderPlayer = ' ';
+                        PrintMap();
                     }
                     break;
                 case 'E':
@@ -152,7 +152,7 @@ class Map {
                     _tileUnderPlayer = ' ';
                     break;
                 case 'B':
-                    Console.WriteLine("You encountered an stronger enemy.");
+                    Console.WriteLine("You encountered a stronger enemy.");
                     _keyNumber++;
                     _tileUnderPlayer = ' ';
                     break;
@@ -171,7 +171,7 @@ class Map {
 public class Maps { 
     static void Main(string[] args) {
         Map map = new Map();
-        Console.SetWindowSize(map.Length + 1, map.Width + 20);
+        Console.SetWindowSize(map.Length + 1, map.Width + 17);
         
         map.PrintMap();
 
