@@ -5,12 +5,15 @@ class Map {
     static int _mapLength = _map.GetLength(1);
     static int _mapWidth = _map.GetLength(0);
     static int _playerX = 2;
+    static int _oldX = _playerX;
     static int _playerY = 9;
+    static int _oldY = _playerY;
     static char _tileUnderPlayer = _map[_playerX, _playerY];
     static char[] _walls = { '─', '│', '┌', '┐', '└', '┘', '┤', '┬', '┴' };
     static char[] _events = { 'X', 'D', 'E', 'A', 'B', 'C' }; // X1 : 8 ; 9 / X2 : 21 ; 25
     static int _keyNumber = 0;
-    static string[] _items = new string [2];
+    static string[] _items = new string [3];
+    static string _inventory = File.ReadAllText("../../../Inventory.json");
     static bool _game = true;
 
     public int Width { get => _mapWidth; }
@@ -23,7 +26,6 @@ class Map {
         for (int i = 0; i < tempmap.Length; i++) {
             for (int j = 0; j < tempmap[i].Length; j++) {
                 if (tempmap[i].Length <= j) break;
-
                 result[i, j] = tempmap[i][j];
             }
         }
@@ -33,13 +35,16 @@ class Map {
     public void PrintMap() {
         Console.Clear();
         Console.WriteLine("Kill enemies and stronger enemies to get the keys that will unlock the doors to get to the boss and defeat him.\nMove with the arrow keys and quit game with escape key.");
-        Console.WriteLine($"\nMap width : {_mapWidth}\nMap length : {_mapLength}");
-        Console.WriteLine("\nLegend : ");
+        Console.WriteLine("\nLegend :");
         foreach (string i in _legend) Console.WriteLine(i);
-        string inv = "\nInventory : ";
-        foreach (string i in _items)
-        {
-            inv += i;
+        string inv = "\nInventory :";
+        foreach (string i in _items) {
+            if (i != null) {
+                inv += $" {i},";
+            }
+        }
+        if (inv.EndsWith(',')) {
+            inv = inv.Remove(inv.Length-1);
         }
         Console.WriteLine(inv);
         Console.WriteLine($"Keys : {_keyNumber}");
@@ -55,6 +60,8 @@ class Map {
     public void GoLeft(){
         if (!_walls.Contains(_map[_playerX, _playerY - 1])) {
             _map[_playerX, _playerY] = _tileUnderPlayer;
+            _oldY= _playerY;
+            _oldX= _playerX;
             _playerY--;
             _tileUnderPlayer = _map[_playerX, _playerY];
             _map[_playerX, _playerY] = 'P';
@@ -65,6 +72,8 @@ class Map {
     public void GoRight() {
         if (!_walls.Contains(_map[_playerX, _playerY + 1])) {
             _map[_playerX, _playerY] = _tileUnderPlayer;
+            _oldY = _playerY;
+            _oldX = _playerX;
             _playerY++;
             _tileUnderPlayer = _map[_playerX, _playerY];
             _map[_playerX, _playerY] = 'P';
@@ -75,6 +84,8 @@ class Map {
     public void GoUp() {
         if (!_walls.Contains(_map[_playerX - 1, _playerY])) {
             _map[_playerX, _playerY] = _tileUnderPlayer;
+            _oldY = _playerY;
+            _oldX = _playerX;
             _playerX--;
             _tileUnderPlayer = _map[_playerX, _playerY];
             _map[_playerX, _playerY] = 'P';
@@ -85,6 +96,8 @@ class Map {
     public void GoDown() {
         if (!_walls.Contains(_map[_playerX + 1, _playerY])){
             _map[_playerX, _playerY] = _tileUnderPlayer;
+            _oldY = _playerY;
+            _oldX = _playerX;
             _playerX++;
             _tileUnderPlayer = _map[_playerX, _playerY];
             _map[_playerX, _playerY] = 'P';
@@ -103,20 +116,34 @@ class Map {
                     } 
                     if (_playerX == 21 && _playerY == 25) {
                         Console.WriteLine("You found an armor !");
-                        _items[1] = ", Armor";
+                        _items[1] = "Armor";
                         _tileUnderPlayer = ' ';
                     }
-                    
+                    if (_playerX == 10 && _playerY == 19)
+                    {
+                        Console.WriteLine("You found a potion !");
+                        _items[2] = "Potion";
+                        _tileUnderPlayer = ' ';
+                    }
                     break;
                 case 'D':
                     Console.WriteLine("You encountered a door !");
                     if (_keyNumber > 0) {
                         _tileUnderPlayer = ' ';
                         _keyNumber--;
+                    } else {
+                        _map[_playerX, _playerY] = 'D';
+                        _map[_oldX, _oldY] = ' ';
+                        _playerX = _oldX;
+                        _playerY = _oldY;
+                        _map[_playerX, _playerY] = 'P';
+                        _tileUnderPlayer = ' ';
+                        PrintMap();
                     }
                     break;
                 case 'E':
                     Console.WriteLine("Congratulations, you found the exit !");
+                    Thread.Sleep(2000);
                     _game = false;
                     break;
                 case 'A':
@@ -125,7 +152,7 @@ class Map {
                     _tileUnderPlayer = ' ';
                     break;
                 case 'B':
-                    Console.WriteLine("You encountered an stronger enemy.");
+                    Console.WriteLine("You encountered a stronger enemy.");
                     _keyNumber++;
                     _tileUnderPlayer = ' ';
                     break;
@@ -144,7 +171,7 @@ class Map {
 public class Maps { 
     static void Main(string[] args) {
         Map map = new Map();
-        Console.SetWindowSize(map.Length + 1, map.Width + 20);
+        Console.SetWindowSize(map.Length + 1, map.Width + 17);
         
         map.PrintMap();
 
