@@ -36,7 +36,7 @@ namespace ProjetCsharp
             Choices ItemChoice = new Choices(Items);
 
 
-            Console.WriteLine("You stumble on a Slime !");
+            Console.WriteLine("You stumbled on a Slime !");
 
             ConsoleKey e;
             e = Console.ReadKey().Key;

@@ -54,7 +54,6 @@ namespace ProjetCsharp
             {
 
             }
-
             _phealth -= amount;
             _phealth = Math.Max(0, _phealth - amount);
         }

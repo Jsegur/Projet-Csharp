@@ -1,8 +1,10 @@
+using ProjetCsharp;
 using System.Text.Json;
 
-public class Maps {
+internal class Maps// : Fight
+{
     string[] _legend = { "P : Player", "S : Start", "X : Point of interest", "D : Door", "E : Exit", "A : Enemy", "B : Strong enemy", "C : Boss" };
-    static string[] _tempmap = File.ReadAllLines("../../../Map.txt");
+    static string[] _tempmap = File.ReadAllLines("Map.txt");
     static char[,] _map = ExtractMap(_tempmap);
     static int _mapLength = _map.GetLength(1);
     static int _mapWidth = _map.GetLength(0);
@@ -15,19 +17,22 @@ public class Maps {
     static char[] _events = { 'X', 'D', 'E', 'A', 'B', 'C' }; // X1 : 8 ; 9 / X2 : 21 ; 25
     static int _keyNumber = 0;
     static Dictionary<string, int> _items;
-    static string[] _inventory = File.ReadAllLines("../../../Inventory.json");
+    static string[] _inventory = File.ReadAllLines("Inventory.json");
     static bool _runGame = true;
 
     public int Width { get => _mapWidth; }
     public int Length { get => _mapLength; }
     public bool RunGame { get => _runGame; set => _runGame = value; }
-    public Dictionary<string, int> Items { get => _items;}
+    public Dictionary<string, int> Items { get => _items; }
 
-    public static char[,] ExtractMap(string[] input) {
+    public static char[,] ExtractMap(string[] input)
+    {
         string[] tempmap = input;
         char[,] result = new char[tempmap.Length, tempmap.Max(i => i.Length)];
-        for (int i = 0; i < tempmap.Length; i++) {
-            for (int j = 0; j < tempmap[i].Length; j++) {
+        for (int i = 0; i < tempmap.Length; i++)
+        {
+            for (int j = 0; j < tempmap[i].Length; j++)
+            {
                 if (tempmap[i].Length <= j) break;
                 result[i, j] = tempmap[i][j];
             }
@@ -35,52 +40,65 @@ public class Maps {
         return result;
     }
 
-    public void LoadInventory() {
-        string file = File.ReadAllText("../../../Inventory.json");
+    public void LoadInventory()
+    {
+        string file = File.ReadAllText("Inventory.json");
         _items = JsonSerializer.Deserialize<Dictionary<string, int>>(file)!;
-     }
-
-    public void SaveInventory() {
-        JsonSerializerOptions options = new JsonSerializerOptions() { WriteIndented = true };
-        var txt = JsonSerializer.Serialize(_items, options);
-        File.WriteAllText("../../../Inventory.json", txt);
     }
 
-    public void PrintMap() {
+    public void SaveInventory()
+    {
+        JsonSerializerOptions options = new JsonSerializerOptions() { WriteIndented = true };
+        var txt = JsonSerializer.Serialize(_items, options);
+        File.WriteAllText("Inventory.json", txt);
+    }
+
+    public void PrintMap()
+    {
         LoadInventory();
         Console.Clear();
         Console.WriteLine("Kill enemies and stronger enemies to get the keys that will unlock the doors to get to the boss and defeat him.\nMove with the arrow keys and quit game with escape key.");
         Console.WriteLine("\nLegend :");
         foreach (string i in _legend) Console.WriteLine(i);
         string inv = "\nInventory :";
-        foreach (var i in _items) {
-            if (i.Value <= 0) continue;
-            if (i.Value == 1) {
-                inv += $" {i.Key},"; 
-            } else {
+        foreach (var i in _items)
+        {
+            if (i.Value <= 0)
+                continue;
+            if (i.Value == 1)
+            {
+                inv += $" {i.Key},";
+            }
+            else
+            {
                 inv += $" {i.Key}({i.Value}),";
             }
 
         }
-        if (inv.EndsWith(',')) {
-            inv = inv.Remove(inv.Length-1);
+        if (inv.EndsWith(','))
+        {
+            inv = inv.Remove(inv.Length - 1);
         }
         Console.WriteLine(inv);
         Console.WriteLine($"Keys : {_keyNumber}");
         _map[_playerX, _playerY] = 'P';
-        for (int i = 0; i < _mapWidth; i++) {
-            for (int j = 0; j < _mapLength; j++) {
+        for (int i = 0; i < _mapWidth; i++)
+        {
+            for (int j = 0; j < _mapLength; j++)
+            {
                 Console.Write("{0}", _map[i, j]);
             }
             Console.WriteLine();
         }
     }
 
-    public void GoLeft(){
-        if (!_walls.Contains(_map[_playerX, _playerY - 1])) {
+    public void GoLeft()
+    {
+        if (!_walls.Contains(_map[_playerX, _playerY - 1]))
+        {
             _map[_playerX, _playerY] = _tileUnderPlayer;
-            _oldY= _playerY;
-            _oldX= _playerX;
+            _oldY = _playerY;
+            _oldX = _playerX;
             _playerY--;
             _tileUnderPlayer = _map[_playerX, _playerY];
             _map[_playerX, _playerY] = 'P';
@@ -88,8 +106,10 @@ public class Maps {
         }
     }
 
-    public void GoRight() {
-        if (!_walls.Contains(_map[_playerX, _playerY + 1])) {
+    public void GoRight()
+    {
+        if (!_walls.Contains(_map[_playerX, _playerY + 1]))
+        {
             _map[_playerX, _playerY] = _tileUnderPlayer;
             _oldY = _playerY;
             _oldX = _playerX;
@@ -100,8 +120,10 @@ public class Maps {
         }
     }
 
-    public void GoUp() {
-        if (!_walls.Contains(_map[_playerX - 1, _playerY])) {
+    public void GoUp()
+    {
+        if (!_walls.Contains(_map[_playerX - 1, _playerY]))
+        {
             _map[_playerX, _playerY] = _tileUnderPlayer;
             _oldY = _playerY;
             _oldX = _playerX;
@@ -112,8 +134,10 @@ public class Maps {
         }
     }
 
-    public void GoDown() {
-        if (!_walls.Contains(_map[_playerX + 1, _playerY])){
+    public void GoDown()
+    {
+        if (!_walls.Contains(_map[_playerX + 1, _playerY]))
+        {
             _map[_playerX, _playerY] = _tileUnderPlayer;
             _oldY = _playerY;
             _oldX = _playerX;
@@ -124,17 +148,22 @@ public class Maps {
         }
     }
 
-    public void Encounter() {
-        if (_events.Contains(_tileUnderPlayer)) {
-            switch (_tileUnderPlayer) {
+    public void Encounter()
+    {
+        if (_events.Contains(_tileUnderPlayer))
+        {
+            switch (_tileUnderPlayer)
+            {
                 case 'X':
-                    if (_playerX == 8 && _playerY == 9) {
+                    if (_playerX == 8 && _playerY == 9)
+                    {
                         Console.WriteLine("You found a sword !");
                         _items["Sword"] += 1;
                         SaveInventory();
                         _tileUnderPlayer = ' ';
-                    } 
-                    if (_playerX == 21 && _playerY == 25) {
+                    }
+                    if (_playerX == 21 && _playerY == 25)
+                    {
                         Console.WriteLine("You found an armor !");
                         _items["Armor"] += 1;
                         SaveInventory();
@@ -150,10 +179,13 @@ public class Maps {
                     break;
                 case 'D':
                     Console.WriteLine("You encountered a door !");
-                    if (_keyNumber > 0) {
+                    if (_keyNumber > 0)
+                    {
                         _tileUnderPlayer = ' ';
                         _keyNumber--;
-                    } else {
+                    }
+                    else
+                    {
                         _map[_playerX, _playerY] = 'D';
                         _map[_oldX, _oldY] = ' ';
                         _playerX = _oldX;
@@ -173,59 +205,22 @@ public class Maps {
                     _runGame = false;
                     break;
                 case 'A':
-                    Console.WriteLine("You encountered an enemy.");
+                    Fight fight1 = new Fight();
                     _keyNumber++;
                     _tileUnderPlayer = ' ';
                     break;
                 case 'B':
-                    Console.WriteLine("You encountered a stronger enemy.");
+                    Fight fight2 = new Fight();
                     _keyNumber++;
                     _tileUnderPlayer = ' ';
                     break;
                 case 'C':
-                    Console.WriteLine("You encountered the boss.");
+                    Fight fight3 = new Fight();
                     _keyNumber++;
                     _tileUnderPlayer = ' ';
                     break;
                 default:
                     break;
-            }
-        }
-    }
-}
-
-public class Game { 
-    static void Main(string[] args) {
-        Maps map = new Maps();
-        Console.SetWindowSize(map.Length + 1, map.Width + 17);
-        
-        map.PrintMap();
-        map.LoadInventory();
-
-        while (map.RunGame) {
-            var key = Console.ReadKey();
-            if (key.Key == ConsoleKey.Escape) {
-                map.Items["Sword"] = 0;
-                map.Items["Armor"] = 0;
-                map.Items["Potion"] = 0;
-                map.SaveInventory();
-                map.RunGame = false;
-            }
-            if (key.Key == ConsoleKey.DownArrow) {
-                map.GoDown();
-                map.Encounter();
-            }
-            if (key.Key == ConsoleKey.UpArrow) {
-                map.GoUp();
-                map.Encounter();
-            }
-            if (key.Key == ConsoleKey.RightArrow) {
-                map.GoRight();
-                map.Encounter();
-            }
-            if (key.Key == ConsoleKey.LeftArrow) {
-                map.GoLeft();
-                map.Encounter();
             }
         }
     }
