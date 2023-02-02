@@ -21,19 +21,19 @@ enum Index
 
 namespace ProjetCsharp
 {
-    internal class Fight
+    internal class Fight : Stat
     {
         private Index index = Index.ACTIONS;
         private bool phase1 = true;
 
-        public  Fight(Player player, Monster monster)
+        public  Fight()
         {
             // Replace later with appropriate actions
             // Make a "Choice with back option" class
 
             Choices ActionChoice = new Choices(new List<string> { "Attack", "Item", "Fuir" });
-            Choices AttackChoice = new Choices(player.Attacks);
-            Choices ItemChoice = new Choices(player.Items);
+            Choices AttackChoice = new Choices(Attacks);
+            Choices ItemChoice = new Choices(Items);
 
 
             Console.WriteLine("You stumble on a Slime !");
@@ -45,13 +45,13 @@ namespace ProjetCsharp
             {
                 Console.Clear();
 
-                Console.WriteLine(player.Name + "\nHP : " + player.Health + " / " + player.MaxHealth + "\n");
-                Console.WriteLine(monster.Name + "\nHP : " + monster.Health + " / " + monster.MaxHealth + "\n");
+                Console.WriteLine(PName + "\nHP : " + PHealth_ + " / " + MaxPHealth_ + "\n");
+                Console.WriteLine(MName + "\nHP : " + MHealth_ + " / " + MaxMHealth_ + "\n");
 
                 switch (index)
                 {
                     case Index.ACTIONS:
-                        if (player.Health < 1)
+                        if (PHealth_ < 1)
                         {
                             Console.WriteLine("You died !");
                             loop = false;
@@ -105,12 +105,12 @@ namespace ProjetCsharp
                         break;
 
                     case Index.USE_ATTACK:
-                        Console.WriteLine("You use " + player.Attacks[AttackChoice.State]);
+                        Console.WriteLine("You use " + Attacks[AttackChoice.State]);
                         e = Console.ReadKey().Key;
                         if (e == ConsoleKey.Enter)
                         {
-                            int damage = player.Strength;
-                            monster.Health -= damage;
+                            int damage = PStrenght_;
+                            MHealth_ -= damage;
                             Console.WriteLine("It deals " + damage + " damage !");
                             e = Console.ReadKey().Key;
                             if (e == ConsoleKey.Enter) { index = Index.ENEMY_ATTACK; }
@@ -119,14 +119,14 @@ namespace ProjetCsharp
                     //case Index.RESULT_ATTACK:
 
                     case Index.USE_ITEM:
-                        Console.WriteLine("You use " + player.Items[ItemChoice.State]);
+                        Console.WriteLine("You use " + Items[ItemChoice.State]);
                         e = Console.ReadKey().Key;
                         if (e == ConsoleKey.Enter)
                         {
-                            int lifeMissing = player.MaxHealth - player.Health;
+                            int lifeMissing = MaxPHealth_ - PHealth_;
                             int heal = 5;
                             if (heal > lifeMissing) { heal = lifeMissing; }
-                            player.Health += heal;
+                            PHealth_ += heal;
                             Console.WriteLine("You healed " + heal + " HP !");
                             e = Console.ReadKey().Key;
                             if (e == ConsoleKey.Enter) { index = Index.ENEMY_ATTACK; }
@@ -134,20 +134,20 @@ namespace ProjetCsharp
                         break;
 
                     case Index.ENEMY_ATTACK:
-                        if (monster.Health < 0)
+                        if (MHealth_ < 0)
                         {
                             Console.WriteLine("You win !");
                             loop = false;
                         }
                         else
                         {
-                            Console.WriteLine(monster.Name + " attacks " + player.Name);
+                            Console.WriteLine(MName + " attacks " + PName);
                             e = Console.ReadKey().Key;
                             if (e == ConsoleKey.Enter)
                             {
-                                int damage = monster.Strength;
-                                player.Health -= damage;
-                                Console.WriteLine("It deals " + player.Name + " " + damage + " damage !");
+                                int damage = MStrenght_;
+                                PHealth_ -= damage;
+                                Console.WriteLine("It deals " + PName + " " + damage + " damage !");
                                 e = Console.ReadKey().Key;
                                 if (e == ConsoleKey.Enter) { index = Index.ACTIONS; }
                             }
