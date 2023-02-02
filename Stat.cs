@@ -6,24 +6,31 @@ using System.Threading.Tasks;
 
 namespace ProjetCsharp
 {
-    internal class Fight
+    internal class Stat
     {
-        int _maxHealth;
+        int _maxmhealth = 100;
+        int _maxphealth = 100;
         int _phealth =100;
         int _mhealth = 100;
-        int _pstrenght;
-        int _mstrenght;
+        int _pstrenght = 34;
+        int _mstrenght = 10;
         int _modifStrenght;
         int _maxMana;
         int _mana;
         public int level;
         private float exp;
         private float expMax;
+        public string PName { get; set; } = "Bob";
+        public string MName { get; set; } = "Slime";
         public int PHealth_ { get => _phealth; set => _phealth = value; }
         public int MHealth_ { get => _mhealth; set => _mhealth = value; }
+        public int MaxMHealth_ { get => _maxmhealth; set => _maxmhealth = value; }
+        public int MaxPHealth_ { get => _maxphealth; set => _maxphealth = value; }
         public int PStrenght_ { get => _pstrenght; set => _pstrenght = value; }
         public int MStrenght_ { get => _mstrenght; set => _mstrenght = value; }
         public int ShortHealth { get; set; }
+        public List<string> Attacks { get; set; } = new List<string> { "Sword swing", "Fire ball", "Thunder strike" };
+        public List<string> Items { get; set; } = new List<string> { "Apple", "Chicken leg", "Sandwich" };
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public int GetHpMonster() 
         {
@@ -32,6 +39,14 @@ namespace ProjetCsharp
         public int GetHpPlayer()
         {
             return _phealth;
+        }
+        public int GetHpMonsterMax()
+        {
+            return _maxmhealth;
+        }
+        public int GetHpPlayerMax()
+        {
+            return _maxphealth;
         }
         public void Domage(int amount)
         {
@@ -45,7 +60,7 @@ namespace ProjetCsharp
         }
         public void Regen(int amount)
         {
-            _phealth = Math.Min(_maxHealth, _phealth + amount);
+            _phealth = Math.Min(_maxphealth, _phealth + amount);
 
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
